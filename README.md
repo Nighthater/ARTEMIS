@@ -1,7 +1,7 @@
 
-# EN: Simulation of an airsoft projecile
+# Simulation of an airsoft projecile
 
-Project for the module _B6P Modelling and Simulation_ in summer semester of 2023
+Project for the module _A6P Modelling and Simulation_ in summer semester of 2023
 
 ## Overview
 In this project, the trajectory of an airsoft projectile is to be simulated.
@@ -19,7 +19,7 @@ It should also be possible to change parameters such as wind, launch height and 
 
 # DE: Simulation eines Airsoft Projektils
 
-Ausarbeitung für das Modul _B6P Modellbildung und Simulation_ im SoSe 2023
+Ausarbeitung für das Modul _A6P Modellbildung und Simulation_ im SoSe 2023
 
 ## Überblick
 In der Ausarbeitung soll die Flugbahn eines Airsoft Projektils simuliert werden.
