@@ -17,7 +17,7 @@ It should also be possible to change parameters such as wind, launch height and 
 
 <hr style="border:2px solid gray">
 
-# DE: Simulation eines Airsoft Projektils
+# Simulation eines Airsoft Projektils
 
 Ausarbeitung für das Modul _A6P Modellbildung und Simulation_ im SoSe 2023
 
