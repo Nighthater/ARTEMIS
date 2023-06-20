@@ -1,7 +1,7 @@
 function [te,ye] = Differential_Solver(gravity,tspan_end)
     global g    
     g = gravity;
-      
+      % Mahlzeit wann Pause
     tspan = [0 tspan_end];
     x0 = 0; u0 = 10; z0 = 0; v0 = 10;
     y0 = [x0 u0 z0 v0];
