@@ -3,7 +3,7 @@
 ## Globally avalible Variables
 
 | Variable Name  | Function | Type | Unit |
-| -------------- | -------- | ---- | ---- |
+| -------------- | -------- | ---- | ---: |
 | `app.Bool_Gravity` | Toggles Gravity in the Simulation | Bool | - |
 | `app.Bool_AirFriction` | Toggles Air Resistance in the Simulation | Bool | - |
 | `app.Bool_MagnusEffect` | Toggles the Magnus Effect in the Simulaiton | Bool | - |
