@@ -1,6 +1,5 @@
-% Calculate the Velocity of an Object depending on its Energy and Mass
-
-function Calculate_HopUp(app)
+% Calculate the Spin of an Object depending on its Speed and Hop-Up
+function CALC_PhysSpin(app)
     max_rpm = app.BB_Velocity_Initial / app.BB_Diameter * 60;
     app.BB_Spin_Initial = max_rpm * app.BB_Hop_Up / 100;
     

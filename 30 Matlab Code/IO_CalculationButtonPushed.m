@@ -1,4 +1,4 @@
-function CalculationButtonPushed(app)
+function IO_CalculationButtonPushed(app)
     % Confirm with Lamp Flash
     % Turn button off
     app.Button_StartCalculation.Enable ="off";

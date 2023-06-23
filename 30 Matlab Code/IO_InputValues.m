@@ -14,8 +14,8 @@ function IO_InputValues(app)
     app.BB_Hop_Up = app.Knob_hopUp.Value;                   % [%]
     
     % Calculate initial conditions
-    Calculate_Velocity(app);
-    Calculate_HopUp(app);
+    CALC_PhysVelocity(app);
+    CALC_PhysSpin(app);
 
     % Update Output fields for Initial conditions
     app.Output_velocity.Value = app.BB_Velocity_Initial;
