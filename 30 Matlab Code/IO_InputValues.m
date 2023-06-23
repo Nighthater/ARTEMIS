@@ -5,7 +5,7 @@ function IO_InputValues(app)
     app.BB_Diameter = app.Spinner_diameter.Value/1000;      % [m]
     
     app.BB_Angle_Initial = app.Spinner_angle.Value;         % [°]
-    app.BB_Height_Initial = app.Spinner_height.Value;          % [m]
+    app.BB_Height_Initial = app.Spinner_height.Value;       % [m]
     
     app.SIM_Gravity = app.Spinner_gravity.Value;            % [m/s²]
     app.SIM_Air_Density = app.Spinner_air_density.Value;    % [kg/m³]
@@ -13,7 +13,7 @@ function IO_InputValues(app)
     
     app.BB_Hop_Up = app.Knob_hopUp.Value;                   % [%]
     
-    % Calculate initial conditions
+    % Calculate initial conditions (Velocity and Spin at t=0)
     CALC_PhysVelocity(app);
     CALC_PhysSpin(app);
 
@@ -21,6 +21,7 @@ function IO_InputValues(app)
     app.Output_velocity.Value = app.BB_Velocity_Initial;
     app.Output_Spin.Value = app.BB_Spin_Initial;
 
+    % Update Output Gauges for Initial conditions
     app.Gauge_angle.Value = app.BB_Angle_Initial;
     app.Gauge_velocity.Value = app.BB_Velocity_Initial;
     app.Gauge_energy.Value = app.BB_Ekin_Initial;
