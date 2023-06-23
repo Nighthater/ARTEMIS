@@ -1,7 +1,11 @@
+<div id="user-content-toc">
+  <ul>
+    <summary><h1 style="display: inline-block;">ARTEMIS</h1></summary>
+  </ul>
+</div>
 
-# Simulation of an airsoft projecile
-
-Project for the module _A6P Modelling and Simulation_ in summer semester of 2023
+#### Airsoft Range and Trajectory Evaluation using MATLAB for Interactive Simulations
+###### Project for the module _A6P Modelling and Simulation_ in summer semester of 2023
 
 ## Overview
 In this project, the trajectory of an airsoft projectile is to be simulated.
@@ -14,12 +18,18 @@ It should also be possible to change parameters such as wind, launch height and 
 - `Matlab R2022b` - https://www.mathworks.com/products/matlab.html  
 - `Matlab App Designer` - Included in Matlab
 - `Overleaf` - https://www.overleaf.com/
+- `GitHub` - https://github.com/Nighthater/HBRS-Matlab-Airsoft
 
 <hr style="border:2px solid gray">
 
-# DE: Simulation eines Airsoft Projektils
+<div id="user-content-toc">
+  <ul>
+    <summary><h1 style="display: inline-block;">ARTEMIS</h1></summary>
+  </ul>
+</div>
 
-Ausarbeitung für das Modul _A6P Modellbildung und Simulation_ im SoSe 2023
+#### Airsoft Reichweiten und Trajektorie-Ermittlung mit MATLAB zur interaktiven Simulation.
+###### Ausarbeitung für das Modul _A6P Modellbildung und Simulation_ im SoSe 2023
 
 ## Überblick
 In der Ausarbeitung soll die Flugbahn eines Airsoft Projektils simuliert werden.
@@ -32,6 +42,6 @@ Ebenfalls sollen die Parameter wie Wind, Starthöhe und -winkel geändert werden
 - `Matlab R2022b` - https://www.mathworks.com/products/matlab.html  
 - `Matlab App Designer` - In Matlab enthalten
 - `Overleaf` - https://www.overleaf.com/
-
+- `GitHub` - https://github.com/Nighthater/HBRS-Matlab-Airsoft
 
 
