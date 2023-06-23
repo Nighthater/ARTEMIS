@@ -1,10 +1,10 @@
 % Calculate the Velocity of an Object depending on its Energy and Mass
 
-function [rpm,BB_Erot_Initial] = Calculate_HopUp(BB_Velocity_Initial,BB_Diameter,BB_Hop_Up,BB_Mass)
-    max_rpm = BB_Velocity_Initial / BB_Diameter * 60;
-    rpm = max_rpm * BB_Hop_Up / 100;
+function Calculate_HopUp(app)
+    max_rpm = app.BB_Velocity_Initial / app.BB_Diameter * 60;
+    app.BB_Spin_Initial = max_rpm * app.BB_Hop_Up / 100;
     
-    omega = rpm / 60;
-    I = 2/5 * BB_Mass * (BB_Diameter / 2).^2;
-    BB_Erot_Initial = 0.5 * I * omega;
+    omega = app.BB_Spin_Initial / 60;
+    I = 2/5 * app.BB_Mass * (app.BB_Diameter / 2).^2;
+    app.BB_Erot_Initial = 0.5 * I * omega;
 end

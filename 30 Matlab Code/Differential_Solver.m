@@ -1,8 +1,7 @@
-function [te,ye] = Differential_Solver(gravity,tspan_end)
-    global g    
-    g = gravity;
-      
-    tspan = [0 tspan_end];
+function [te,ye] = Differential_Solver(app)
+    global g
+    g = app.SIM_Gravity;
+    tspan = [0 app.tspan_end];
     x0 = 0; u0 = 10; z0 = 0; v0 = 10;
     y0 = [x0 u0 z0 v0];
     options = odeset('RelTol',1.0e-6);
