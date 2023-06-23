@@ -1,3 +1,4 @@
+% Checks for toggled switches, sets the Bool Values and sets the Indicator Lamps on the Interface
 function IO_ToggleFunctions(app)
     app.Bool_Gravity = app.Toggle_gravity.Value;
     app.Bool_AirFriction = app.Toggle_friction.Value;
