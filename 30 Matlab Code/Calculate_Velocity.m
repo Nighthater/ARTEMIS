@@ -1,5 +1,5 @@
 % Calculate the Velocity of an Object depending on its Energy and Mass
 
-function [v] = Calculate_Velocity(BB_Energy_Initial,BB_Mass)
-    v = sqrt(2*BB_Energy_Initial/BB_Mass);
+function Calculate_Velocity(app)
+    app.BB_Velocity_Initial = sqrt(2*app.BB_Ekin_Initial/app.BB_Mass);
 end
