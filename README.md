@@ -14,6 +14,10 @@ The technical data of an Action Army AAP-01 Assassin airsoft pistol will be used
 The simulation is to be structured on several iterations and should allow the input of parameters of other softair weapons.
 It should also be possible to change parameters such as wind, launch height and angle.
 
+## Links
+
+[Technical Documentation](https://github.com/Nighthater/ARTEMIS/blob/master/Technical_Documentation.md)
+
 ## Software used
 - `Matlab R2022b` - https://www.mathworks.com/products/matlab.html  
 - `Matlab App Designer` - Included in Matlab
@@ -37,6 +41,10 @@ In der Ausarbeitung soll die Flugbahn eines Airsoft Projektils simuliert werden.
 Orientiert wird sich dabei an den technischen Daten einer Action Army AAP-01 Assassin Airsoft Pistole.
 Die Simulation soll mehrstufig aufgebaut werden und soll die Eingabe von Parametern anderen Softairwaffen zulassen.
 Ebenfalls sollen die Parameter wie Wind, Starthöhe und -winkel geändert werden können.
+
+## Links
+
+[Technical Documentation](https://github.com/Nighthater/ARTEMIS/blob/master/Technical_Documentation.md)
 
 ## Verwendete Software
 - `Matlab R2022b` - https://www.mathworks.com/products/matlab.html  
