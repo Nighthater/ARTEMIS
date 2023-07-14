@@ -14,7 +14,7 @@ function dy = dgl_only_gravity(t,y)
     dy(1,1) = y(2);
     dy(2,1) = 0;
     dy(3,1) = y(4);
-    dy(4,1) = -g;
+    dy(4,1) = -g; %a<d<aod<ad
 end
 
 function [value,isterminal,direction] = events(t,y)
