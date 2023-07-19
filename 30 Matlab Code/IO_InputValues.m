@@ -1,6 +1,6 @@
 function IO_InputValues(app)
     % Transfer the GUI Input fields into variables
-    app.BB_Ekin_Initial = app.Spinner_energy.Value;         % [J]
+    %app.BB_Ekin_Initial = app.Spinner_energy.Value;         % [J]
     app.BB_Mass = app.Spinner_mass.Value/1000;              % [kg]
     app.BB_Diameter = app.Spinner_diameter.Value/1000;      % [m]
     
@@ -10,11 +10,22 @@ function IO_InputValues(app)
     app.SIM_Gravity = app.Spinner_gravity.Value;            % [m/s²]
     app.SIM_Air_Density = app.Spinner_air_density.Value;    % [kg/m³]
     
-    
     app.BB_Hop_Up = app.Knob_hopUp.Value;                   % [%]
+
+    %Calculate v or Ekin depending if either is given as Input
+    if app.Toggle_Ekin_v.Value == "v"               % Velocity is given
+        app.Spinner_energy.Enable = "Off";
+        app.Spinner_velocity.Enable = "On";
+        app.BB_Velocity_Initial = app.Spinner_velocity.Value;       % [v]
+        CALC_PhysEnergy(app);
+    else                                            % Energy is given
+        app.Spinner_energy.Enable = "On";
+        app.Spinner_velocity.Enable = "Off";
+        app.BB_Ekin_Initial = app.Spinner_energy.Value;             % [J]
+        CALC_PhysVelocity(app);
+    end
     
-    % Calculate initial conditions (Velocity and Spin at t=0)
-    CALC_PhysVelocity(app);
+    % Calculate initial conditions (Spin Velocity and Spin Energy at t=0)
     CALC_PhysSpin(app);
 
     % Update Output fields for Initial conditions
