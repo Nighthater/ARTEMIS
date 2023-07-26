@@ -8,6 +8,7 @@ function IO_InputValues(app)
     
     app.SIM_Gravity = app.Spinner_gravity.Value;            % [m/s²]
     app.SIM_Air_Density = app.Spinner_air_density.Value;    % [kg/m³]
+    app.tspan_end = app.Spinner_tspan.Value;
     
     app.BB_Hop_Up = app.Knob_hopUp.Value;                   % [%]
 

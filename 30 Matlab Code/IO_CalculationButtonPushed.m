@@ -1,37 +1,27 @@
 function IO_CalculationButtonPushed(app)
-    % Confirm with Lamp Flash
-    % Turn button off
-    app.Button_StartCalculation.Enable ="off";
+    % Call InputWindPanel just to be sure
+    IO_InputWindPanel(app)
 
-    % Funky Animation
-    % Turns Lamp Yellow then Green then back to Yellow
-    app.Lamp_Feedback.Color = [1.00,1.00,0.00];
+    
+    app.Button_StartCalculation.Enable ="off";                              % Turn button off
+    
+    app.Lamp_Feedback.Color = [1.00,1.00,0.00];                             % Turn Lamp Yellow, then Green, then back to Yellow
     pause(0.1);
     app.Lamp_Feedback.Color = [0.00,1.00,0.00];
     pause(0.1);
     app.Lamp_Feedback.Color = [1.00,1.00,0.00];
     
-    
-    % Actual code goes 'ere
-    % ...
-    % Input for Simulation
-    % 
-    % Initial conditions
-    % q0
-    % tspan
-    % 
-    % 
-    % 
-    % 
-    app.tspan_end = 50;
-    [t,y] = Differential_Solver(app);
-    plot(app.Plot2D_Trajectory,t,y(:,3),'x','LineWidth',5);
+    Differential_Solver(app);                                               % Run Solver
+
     
 
-    % Funky Animation
-    pause(1.0);
-    app.Lamp_Feedback.Color = [0.00,1.00,0.00];
+
+    plot(app.Plot2D_Trajectory,app.ODE_x,app.ODE_y);                        % Plot stuff
+    
+    area(app.Plot2D_Energy,app.ODE_t,[app.ODE_Ekin,app.ODE_Epot]);
+
+    pause(1.0);                                                             % Wait some time so it looks like the program is working really hard
+    app.Lamp_Feedback.Color = [0.00,1.00,0.00];                             % Turn Lamp Green
     pause(0.2);
-    % Turn button on
-    app.Button_StartCalculation.Enable ="on";
+    app.Button_StartCalculation.Enable ="on";                               % Turn button on
 end
