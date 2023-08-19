@@ -10,7 +10,7 @@ function IO_InputValues(app)
     app.SIM_Air_Density = app.Spinner_air_density.Value;    % [kg/m³]
     app.tspan_end = app.Spinner_tspan.Value;
     
-    app.BB_Hop_Up = app.Knob_hopUp.Value;                   % [%]
+    app.BB_Spin_Initial = app.Spinner_spin.Value;           % [RPM]
 
     %Calculate v or Ekin depending if either is given as Input
     if app.Toggle_Ekin_v.Value == "v"                                       % Velocity is given
@@ -31,12 +31,10 @@ function IO_InputValues(app)
     % Calculate initial conditions (Spin Velocity and Spin Energy at t=0)
     CALC_PhysSpin(app);
 
-    % Update Output fields for Initial conditions
-    app.Output_velocity.Value = app.BB_Velocity_Initial;
-    app.Output_Spin.Value = app.BB_Spin_Initial;
 
     % Update Output Gauges for Initial conditions
     app.Gauge_angle.Value = app.BB_Angle_Initial;
     app.Gauge_velocity.Value = app.BB_Velocity_Initial;
     app.Gauge_energy.Value = app.BB_Ekin_Initial;
+    app.Gauge_spin.Value = app.BB_Hop_Up;
 end

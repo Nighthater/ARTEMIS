@@ -66,6 +66,24 @@ function IO_InputWindPanel(app)
     hold(app.WindPlot, 'on');
     plot(app.WindPlot, t, y_sineTotal, 'w', 'LineWidth', 3);
     hold(app.WindPlot, 'off');
+
+    app.SIM_Wind_X_Properties = [
+        app.Spinner_Period01.Value
+        app.Spinner_PhaseAngle01.Value * pi/180 
+        app.Spinner_Amplitude01.Value
+        app.Spinner_Offset01.Value
+        
+        app.Spinner_Period02.Value
+        app.Spinner_PhaseAngle02.Value * pi/180 
+        app.Spinner_Amplitude02.Value
+        app.Spinner_Offset02.Value
+        
+        app.Spinner_Period03.Value
+        app.Spinner_PhaseAngle03.Value * pi/180 
+        app.Spinner_Amplitude03.Value
+        app.Spinner_Offset03.Value
+        
+    ];
 end
 
 function y = sine01(t,app)
@@ -90,5 +108,4 @@ function y = sine03(t,app)
     offset = app.Spinner_Offset03.Value;
     period = app.Spinner_Period03.Value;
     y = sin(2*pi*(t / period) + phaseAngle) * amplitude + offset;
-    %y = sin((t + phaseAngle) / period) * amplitude + offset;
 end
