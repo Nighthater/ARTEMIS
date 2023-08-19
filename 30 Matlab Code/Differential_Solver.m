@@ -1,7 +1,7 @@
 function Differential_Solver(app)
 %% Variable Declarations
     % Declare Global variables to pass into the differential equations
-    global g
+    global g cw air_density r m
     
     % Check if Gravity is enabled for the Simulation
     if app.Bool_Gravity == true
@@ -15,9 +15,14 @@ function Differential_Solver(app)
     % Alternative Gravity check
 
     g = app.SIM_Gravity * app.Bool_Gravity;
+    cw = 0.4 * app.Bool_AirFriction;
+    air_density = app.SIM_Air_Density;
+    r = app.BB_Diameter/2;
+    m = app.BB_Mass;
 
 %% ODE Solver
     tspan = [0 app.tspan_end];                                              % Timespan for the Simulation starts at 0 and ends at User specified time
+
     x0 = 0;                                                                 % Horizontal distance from coordinate Origin is 0
     vx = app.BB_Velocity_Initial* cos(app.BB_Angle_Initial * pi/180);       % Horizontal velocity is the X component of the initial Velocity Vector
     z0 = app.BB_Height_Initial;                                             % Vertical distance from coordinate Origin is the Height of the Barrel
@@ -51,12 +56,28 @@ end
 
 %% Differential Equations
 function dy = dgl_only_gravity(t,y)
-    global g
+    global g cw air_density r m
+    
+    A = pi * r^2;
+
+    gravity = g;
+    air_resistance_x = 1/2 * cw * air_density * A * y(2)^2 * sign(y(2)) * -1;
+    air_resistance_z = 1/2 * cw * air_density * A * y(4)^2 * sign(y(4)) * -1;
+
+    total_velocity = sqrt( y(2)^2 + y(4)^2 );
+    %F_Magnus = (air_density * A) / 2 * y(6) * total_velocity;
+    F_Magnus = 4/3 * pi * air_density * r^3 * y(6) * total_velocity;
+
+    angle = atan2(y(4),y(2));
+
+    magnus_x = F_Magnus * cos(angle + pi/2);
+    magnus_z = F_Magnus * sin(angle + pi/2);
+    
     dy(1,1) = y(2);                                                         % x'  = y(2)
-    dy(2,1) = 0;                                                            % x'' = FORCES IN HORIZONTAL
+    dy(2,1) = air_resistance_x/m + magnus_x/m;                                             % x'' = FORCES IN HORIZONTAL
     dy(3,1) = y(4);                                                         % z'  = y(4)
-    dy(4,1) = -g;                                                           % z'' = FORCES IN VERTICAL
-    dy(5,1) = 0;                                                            % θ'  = y(6)
+    dy(4,1) = - gravity + air_resistance_z/m + magnus_z/m;                                   % z'' = FORCES IN VERTICAL
+    dy(5,1) = y(6);                                                         % θ'  = y(6)
     dy(6,1) = 0;                                                            % θ'' = FORCES IN ROTATION
 end
 
