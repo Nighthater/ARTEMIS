@@ -12,13 +12,20 @@ function Differential_Solver(app)
         g = 0;
     end
 
+    % Alternative Gravity check
+
+    g = app.SIM_Gravity * app.Bool_Gravity;
+
 %% ODE Solver
     tspan = [0 app.tspan_end];                                              % Timespan for the Simulation starts at 0 and ends at User specified time
     x0 = 0;                                                                 % Horizontal distance from coordinate Origin is 0
     vx = app.BB_Velocity_Initial* cos(app.BB_Angle_Initial * pi/180);       % Horizontal velocity is the X component of the initial Velocity Vector
     z0 = app.BB_Height_Initial;                                             % Vertical distance from coordinate Origin is the Height of the Barrel
     vz = app.BB_Velocity_Initial * sin(app.BB_Angle_Initial * pi/180);      % Vertical velocity is the Y component of the initial Velocity Vector
-    y0 = [x0 vx z0 vz];                                                     % Define the starting values as y0(1) to y0(4) y0(1:4) = [x, x', z, z']
+    theta = 0;                                                              % Total Rotations, 0 at beginning
+    omega = app.BB_Spin_Initial/60;                                         % Rotation Rate in [1/s]
+
+    y0 = [x0 vx z0 vz theta omega];                                         % Define the starting values as y0: with y0(1:6) = [x, x', z, z', θ, θ']
 
     options = odeset('RelTol',1.0e-6,'Events',@events);                     % Options for the ODE Solver
     [t,y] = ode45(@dgl_only_gravity, tspan, y0, options);                   % Call the ODE Selver and give out the results into t and y
@@ -45,10 +52,12 @@ end
 %% Differential Equations
 function dy = dgl_only_gravity(t,y)
     global g
-    dy(1,1) = y(2);
-    dy(2,1) = 0;
-    dy(3,1) = y(4);
-    dy(4,1) = -g;
+    dy(1,1) = y(2);                                                         % x'  = y(2)
+    dy(2,1) = 0;                                                            % x'' = FORCES IN HORIZONTAL
+    dy(3,1) = y(4);                                                         % z'  = y(4)
+    dy(4,1) = -g;                                                           % z'' = FORCES IN VERTICAL
+    dy(5,1) = 0;                                                            % θ'  = y(6)
+    dy(6,1) = 0;                                                            % θ'' = FORCES IN ROTATION
 end
 
 %% Event detection

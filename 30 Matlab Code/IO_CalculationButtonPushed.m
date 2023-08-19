@@ -17,6 +17,10 @@ function IO_CalculationButtonPushed(app)
 
 
     plot(app.Plot2D_Trajectory,app.ODE_x,app.ODE_y);                        % Plot stuff
+
+    plot(app.Plot2D_Trajectory2,app.ODE_t,app.ODE_y);                        % Plot stuff
+
+    plot(app.Plot3D_Trajectory,app.ODE_x,app.ODE_y);
     
     area(app.Plot2D_Energy,app.ODE_t,[app.ODE_Ekin,app.ODE_Epot]);
 
