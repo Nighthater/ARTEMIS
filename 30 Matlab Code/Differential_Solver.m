@@ -86,12 +86,12 @@ function dy = dgl_only_gravity(t,y)
     air_resistance_z = 1/2 * cw * air_density * A * y(4)^2 * sign(y(4)) * -1 * states(2);
 
     %% Magnus
-    total_velocity = sqrt( y(2)^2 + y(4)^2 );
+    total_velocity = sqrt( relative_vel_x^2 + y(4)^2 );
 
     %F_Magnus = (air_density * A) / 2 * y(6) * total_velocity;
     F_Magnus = 4/3 * pi * air_density * r^3 * y(6) * total_velocity;
 
-    angle = atan2(y(4),y(2));
+    angle = atan2(y(4),relative_vel_x);
 
     magnus_x = F_Magnus * cos(angle + pi/2) * states(3);
     magnus_z = F_Magnus * sin(angle + pi/2) * states(3);
