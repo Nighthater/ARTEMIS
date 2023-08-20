@@ -32,7 +32,7 @@ function Differential_Solver(app)
 
     y0 = [x0 vx z0 vz theta omega];                                         % Define the starting values as y0: with y0(1:6) = [x, x', z, z', θ, θ']
 
-    options = odeset('RelTol',1.0e-6,'Events',@events);                     % Options for the ODE Solver
+    options = odeset('RelTol',1e-8,'AbsTol',1e-10,'Events',@events);                     % Options for the ODE Solver
     [t,y] = ode45(@dgl_only_gravity, tspan, y0, options);                   % Call the ODE Selver and give out the results into t and y
                                                                             % t are simply the time values
                                                                             % y(1:4) contains position and velocity in the same format as the starting values
