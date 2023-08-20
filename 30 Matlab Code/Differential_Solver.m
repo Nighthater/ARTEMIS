@@ -40,17 +40,28 @@ function Differential_Solver(app)
     % Give the time and location data to the app Object for further usage
     % in other functions for plotting and evaluation.
     app.ODE_t = t;                                                          
-    app.ODE_y = y(:,3);
+    app.ODE_z = y(:,3);
+    app.ODE_y = 0;
     app.ODE_x = y(:,1);
 
     % Calculate the Kinetic Energies and potential Energies and give it to
     % the app Object for further usage in other functions for plotting 
     % and evaluation.
     Ekin_x = 1/2 * app.BB_Mass * y(:,2) .^2;
-    Ekin_y = 1/2 * app.BB_Mass * y(:,4) .^2;
+    %Ekin_y = 0;
+    Ekin_z = 1/2 * app.BB_Mass * y(:,4) .^2;
     E_pot = app.BB_Mass * g * y(:,3);
-    app.ODE_Ekin = Ekin_x + Ekin_y;
+    app.ODE_Ekin = Ekin_x + Ekin_z;
     app.ODE_Epot = E_pot;
+    
+    app.ODE_v = sqrt(y(:,2).^2+y(:,4).^2);
+    
+    I = 2/5 * app.BB_Mass * (app.BB_Diameter / 2).^2;           % I = 2/5 * m * r^2
+    app.ODE_Erot = 0.5 * I * y(:,6);
+
+    app.ODE_vx = y(:,2);
+    app.ODE_vy = 0;
+    app.ODE_vz = y(:,4);
 
 end
 
