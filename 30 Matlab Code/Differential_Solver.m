@@ -97,20 +97,22 @@ function dy = dgl_only_gravity(t,y)
 
     F_Magnus = 4/3 * pi * air_density * r^3 * y(8) * total_velocity;
 	
-	% Flight Angle Altitude
-    angle = atan2(y(6),y(2));
+	Velocityvector = [y(2) y(4) y(6)]; % Vector of velocity
+	mag_v = Velocityvector / total_velocity; % Vector has length 1
 	
 	% Flight Azimuth
 	angle_az = atan2(y(2),y(4));
 
     %Cross product axb -> rotate azimuth by 90 deg (z component = 0)
-    % a is given (trajectory)
-    % calculate b
-    % b is Vector of magnus
-
-    magnus_x = F_Magnus * cos(angle + pi/2) * states(3);
-	%magnus_y = F_Magnus * w h a t is here? * states(3);
-    magnus_z = F_Magnus * sin(angle + pi/2) * states(3);
+	mag_cross = [cos(angle_az + pi/2) sin(angle_az + pi/2) 0];
+	
+    % a is given (velocityvector), calculate b
+	mag_b =  cross(mag_v, mag_cross);
+    % b is Vector of magnus, split into components
+	
+    magnus_x = F_Magnus * mag_b(1) * states(3);
+	magnus_y = F_Magnus * mag_b(2) * states(3);
+    magnus_z = F_Magnus * mag_b(3) * states(3);
     
     %% Spin decay
     %decay = XXXX;
