@@ -1,7 +1,7 @@
 function Differential_Solver(app)
 %% Variable Declarations
     % Declare Global variables to pass into the differential equations
-    global g cw air_density r m states wind_x_params
+    global g cw air_density r m states wind_x_params wind_y_params
     
 
     
@@ -20,6 +20,7 @@ function Differential_Solver(app)
     states(5) = app.Bool_Wind;          % Toggle for Wind
 
     wind_x_params(1:12) = app.SIM_Wind_X_Properties(1:12);
+    wind_y_params(1:12) = app.SIM_Wind_Y_Properties(1:12);
 %% ODE Solver
     tspan = [0 app.tspan_end];                                              % Timespan for the Simulation starts at 0 and ends at User specified time
 
@@ -53,7 +54,7 @@ function Differential_Solver(app)
     Ekin_y = 1/2 * app.BB_Mass * y(:,4) .^2;
     Ekin_z = 1/2 * app.BB_Mass * y(:,6) .^2;
     E_pot = app.BB_Mass * g * y(:,5);
-    app.ODE_Ekin = Ekin_x + Ekin_z;
+    app.ODE_Ekin = Ekin_x + Ekin_y + Ekin_z;
     app.ODE_Epot = E_pot;
     
     app.ODE_v = sqrt(y(:,2).^2+y(:,4).^2+y(:,6).^2);
@@ -69,7 +70,7 @@ end
 
 %% Differential Equations
 function dy = dgl_only_gravity(t,y)
-    global g cw air_density r m states wind_x_params
+    global g cw air_density r m states wind_x_params wind_y_params
     
     A = pi * r^2;
 
@@ -81,38 +82,44 @@ function dy = dgl_only_gravity(t,y)
     sine_02_x = sin(2*pi*(t / wind_x_params(5)) + wind_x_params(6)) * wind_x_params(7) + wind_x_params(8);
     sine_03_x = sin(2*pi*(t / wind_x_params(9)) + wind_x_params(10)) * wind_x_params(11) + wind_x_params(12);
     wind_speed_x = sine_01_x + sine_02_x + sine_03_x;
+
+    % Wind Speed Crossrange
+    sine_01_y = sin(2*pi*(t / wind_y_params(1)) + wind_y_params(2)) * wind_y_params(3) + wind_y_params(4);
+    sine_02_y = sin(2*pi*(t / wind_y_params(5)) + wind_y_params(6)) * wind_y_params(7) + wind_y_params(8);
+    sine_03_y = sin(2*pi*(t / wind_y_params(9)) + wind_y_params(10)) * wind_y_params(11) + wind_y_params(12);
+    wind_speed_y = sine_01_y + sine_02_y + sine_03_y;
 	
 	% Relative Velocities
     relative_vel_x = y(2) + ( - wind_speed_x * states(5) );
-    %relative_vel_y = y(4) + ( - wind_speed_y * states(5) );
+    relative_vel_y = y(4) + ( - wind_speed_y * states(5) );
 	%relative_vel_z = y(6) + ( - wind_speed_z * states(5) );
 	
 	% Forces
     air_resistance_x = 1/2 * cw * air_density * A * relative_vel_x^2 * sign(relative_vel_x) * -1 * states(2);
-	air_resistance_y = 1/2 * cw * air_density * A * y(4)^2 * sign(y(4)) * -1 * states(2);
+	air_resistance_y = 1/2 * cw * air_density * A * relative_vel_y^2 * sign(relative_vel_y) * -1 * states(2);
     air_resistance_z = 1/2 * cw * air_density * A * y(6)^2 * sign(y(6)) * -1 * states(2);
 
     %% Magnus Force
-    total_velocity = sqrt( y(2)^2 + y(4)^2 +y(6)^2);
+    total_velocity = sqrt(relative_vel_x^2 + relative_vel_y^2 +y(6)^2);
 
     F_Magnus = 4/3 * pi * air_density * r^3 * y(8) * total_velocity;
 	
-	Velocityvector = [y(2) y(4) y(6)]; % Vector of velocity
+	Velocityvector = [relative_vel_x relative_vel_y y(6)]; % Vector of velocity
 	mag_v = Velocityvector / total_velocity; % Vector has length 1
 	
 	% Flight Azimuth
 	angle_az = atan2(y(2),y(4));
 
     %Cross product axb -> rotate azimuth by 90 deg (z component = 0)
-	mag_cross = [cos(angle_az + pi/2) sin(angle_az + pi/2) 0];
+	mag_cross = [sin(angle_az + pi/2) cos(angle_az + pi/2) 0];
 	
     % a is given (velocityvector), calculate b
 	mag_b =  cross(mag_v, mag_cross);
     % b is Vector of magnus, split into components
 	
-    magnus_x = F_Magnus * mag_b(1) * states(3);
-	magnus_y = F_Magnus * mag_b(2) * states(3);
-    magnus_z = F_Magnus * mag_b(3) * states(3);
+    magnus_x =  F_Magnus * mag_b(1) * states(3);
+	magnus_y =  F_Magnus * mag_b(2) * states(3);
+    magnus_z =  F_Magnus * mag_b(3) * states(3);
     
     %% Spin decay
     %decay = XXXX;
@@ -131,7 +138,7 @@ end
 %% Event detection
 function [value,isterminal,direction] = events(t,y)
     
-    value=y(3);         % value to monitor
+    value=y(5);         % value to monitor
     isterminal = 1;     % 1: Abort solver, 0: Continue regardless of event
     direction = 0;      % -1: Only if Derivative is negative, 1: Only if Derivative is Positive, 0: Detect all events
 end
