@@ -103,6 +103,11 @@ function dy = dgl_only_gravity(t,y)
 	% Flight Azimuth
 	angle_az = atan2(y(2),y(4));
 
+    %Cross product axb -> rotate azimuth by 90 deg (z component = 0)
+    % a is given (trajectory)
+    % calculate b
+    % b is Vector of magnus
+
     magnus_x = F_Magnus * cos(angle + pi/2) * states(3);
 	%magnus_y = F_Magnus * w h a t is here? * states(3);
     magnus_z = F_Magnus * sin(angle + pi/2) * states(3);
@@ -113,7 +118,7 @@ function dy = dgl_only_gravity(t,y)
     %% Functions
     dy(1,1) = y(2);                                                         % x'  = y(2)
     dy(2,1) = air_resistance_x/m + magnus_x/m;                              % x'' = FORCES DOWNRANGE
-	dy(3,1) = y(4)															% y'  = y(4)
+	dy(3,1) = y(4);															% y'  = y(4)
 	dy(4,1) = air_resistance_y/m + magnus_y/m;								% x'' = FORCES CROSSRANGE
     dy(5,1) = y(6);                                                         % z'  = y(6)
     dy(6,1) = - gravity + air_resistance_z/m + magnus_z/m;                  % z'' = FORCES IN VERTICAL
