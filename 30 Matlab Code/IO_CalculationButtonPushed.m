@@ -56,7 +56,7 @@ function IO_CalculationButtonPushed(app)
         plot(app.Plot2D_tvz,app.ODE_t,app.ODE_vz);                              % vz-t Plot
     
         plot(app.Plot2D_tx,app.ODE_t,app.ODE_x);                                % x-t Plot
-        plot(app.Plot2D_ty,[0, app.tspan_end],[0 0]);                                % y-t Plot
+        plot(app.Plot2D_ty,[0, app.tspan_end],[0 0]);                           % y-t Plot
         plot(app.Plot2D_tz2,app.ODE_t,app.ODE_z);                               % z-t Plot
     end
 
