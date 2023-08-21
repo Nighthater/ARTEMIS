@@ -140,8 +140,11 @@ function dy = dgl_only_gravity(t,y)
     magnus_z =  F_Magnus * mag_b(3) * states(3);
     
     %% Spin decay
-	%TODO
-    %decay = XXXX;
+	% nu & I
+    nu = 17.8 * 10^-6;
+    I = 2/5 * m * r^2;           % I = 2/5 * m * r^2
+    % Torque
+    T = -8 * pi * r^3 * nu * y(8) * states(4);
     
     %% Functions for Differential Solving
     dy(1,1) = y(2);                                                         % x'  = y(2)
@@ -151,7 +154,7 @@ function dy = dgl_only_gravity(t,y)
     dy(5,1) = y(6);                                                         % z'  = y(6)
     dy(6,1) = - gravity + air_resistance_z/m + magnus_z/m;                  % z'' = FORCES IN VERTICAL
     dy(7,1) = y(8);                                                         % θ'  = y(8)
-    dy(8,1) = 0;                                                            % θ'' = FORCES IN ROTATION
+    dy(8,1) = T/I;                                                          % θ'' = FORCES IN ROTATION
 end
 
 %% Event detection
