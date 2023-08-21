@@ -7,6 +7,7 @@ function IO_ToggleFunctions(app)
     app.Bool_MagnusEffect = app.Toggle_magnus.Value;
     app.Bool_SpinDecay = app.Toggle_spin_decay.Value;
     app.Bool_Wind = app.Toggle_wind.Value;
+    app.Bool_2D3D = app.Toggle_2D3D.Value;
 
 	% Toggle the Lamps for the individual Switches depending on the Position
     if(app.Bool_Gravity == 1)

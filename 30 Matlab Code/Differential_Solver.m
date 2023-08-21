@@ -1,7 +1,7 @@
 function Differential_Solver(app)
 	%% Variable Declarations
     % Declare Global variables to pass into the differential equations
-    global g cw air_density r m states wind_x_params wind_y_params
+    global g cw air_density r m states wind_x_params wind_y_params last_az
     
     % States are used to toggle functions, states() are either 0 or 1
     states(1) = app.Bool_Gravity;       % Toggle for Gravity
@@ -20,6 +20,8 @@ function Differential_Solver(app)
 	% Whe wind parameters contain the parameters for 3 sine functions that define the wind in the simulation
     wind_x_params(1:12) = app.SIM_Wind_X_Properties(1:12);
     wind_y_params(1:12) = app.SIM_Wind_Y_Properties(1:12);
+
+    last_az = 0;
 	
 	%% ODE Solver
     tspan = [0 app.tspan_end];                                              % Timespan for the Simulation starts at 0 and ends at User specified time
@@ -76,7 +78,7 @@ end
 
 %% Differential Equations
 function dy = Airsoft(t,y) % (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧ Magic 
-    global g cw air_density r m states wind_x_params wind_y_params
+    global g cw air_density r m states wind_x_params wind_y_params last_az
     
 	% Crossection Area of Projectile
     A = pi * r^2;
@@ -126,7 +128,13 @@ function dy = Airsoft(t,y) % (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧ Magic
 	
 	% Get the Flight Azimuth direction in XY
 	angle_az = atan2(y(2),y(4)); % Problemstelle
-
+    
+    if abs(angle_az-last_az) > 90/180*pi
+        angle_az = last_az;
+    else
+        last_az = angle_az;
+    end
+    
     % The Cross product AxB is the Azimuth rotated by 90 deg (z component = 0)
 	mag_cross = [sin(angle_az + pi/2) cos(angle_az + pi/2) 0];
 	
