@@ -35,8 +35,9 @@ function Differential_Solver(app)
 
     y0 = [x0 vx y0 vy z0 vz theta omega];                                   % Define the starting values as y0: with y0(1:8) = [x, x', y, y', z, z', θ, θ']
 
-    options = odeset('RelTol',1e-8,'AbsTol',1e-10,'Events',@events);        % Options for the ODE Solver
-    [t,y] = ode45(@dgl_only_gravity, tspan, y0, options);                   % Call the ODE Selver and give out the results into t and y
+    %options = odeset('RelTol',1e-8,'AbsTol',1e-10,'Events',@events);        % Options for the ODE Solver
+    options = odeset('RelTol',1e-6,'Events',@events);
+    [t,y] = ode45(@Airsoft, tspan, y0, options);                            % Call the ODE Selver and give out the results into t and y
                                                                             % t are simply the time values
                                                                             % y(1:4) contains position and velocity in the same format as the starting values
     %% Exporting Results
@@ -74,7 +75,7 @@ function Differential_Solver(app)
 end
 
 %% Differential Equations
-function dy = dgl_only_gravity(t,y)
+function dy = Airsoft(t,y) % (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧ Magic 
     global g cw air_density r m states wind_x_params wind_y_params
     
 	% Crossection Area of Projectile
@@ -124,14 +125,14 @@ function dy = dgl_only_gravity(t,y)
 	mag_v = Velocityvector / total_velocity;
 	
 	% Get the Flight Azimuth direction in XY
-	angle_az = atan2(y(2),y(4));
+	angle_az = atan2(y(2),y(4)); % Problemstelle
 
     % The Cross product AxB is the Azimuth rotated by 90 deg (z component = 0)
 	mag_cross = [sin(angle_az + pi/2) cos(angle_az + pi/2) 0];
 	
     % Vector A (Velocityvector) and the Cross Product AxB is given, calculate b
 	% A, AxB and B are all 90° from each other, so A crossed AxB is B
-	mag_b =  - cross(mag_v, mag_cross);
+	mag_b = - cross(mag_v, mag_cross);
     
 	% B points in the direction of the Magnusforce with length 1
 	% Get the individual components
@@ -158,9 +159,11 @@ function dy = dgl_only_gravity(t,y)
 end
 
 %% Event detection
-% Abort Simulaiton once Object hits the Ground
+% Abort Simulaiton once Object hits the Ground 
 function [value,isterminal,direction] = events(t,y)
-	value=y(5);         % value to monitor (Z-Position)
-    isterminal = 1;     % 1: Abort solver, 0: Continue regardless of event
-    direction = 0;      % -1: Only if Derivative is negative, 1: Only if Derivative is Positive, 0: Detect all events
+	tol = 1e-2;                                                       
+    vel = sqrt(y(2)^2 + y(4)^2 + y(6)^2);                                   % value to monitor (Sum of Speeds)
+    value = [y(5) vel-tol];
+    isterminal = [1 1];     % 1: Abort solver, 0: Continue regardless of event
+    direction = [0 0];      % -1: Only if Derivative is negative, 1: Only if Derivative is Positive, 0: Detect all events
 end

@@ -6,11 +6,8 @@ function IO_CalculationButtonPushed(app)
     
     app.Button_StartCalculation.Enable ="off";                              % Turn button off
     
-    app.Lamp_Feedback.Color = [1.00,1.00,0.00];                             % Turn Lamp Yellow, then Green, then back to Yellow
+    app.Lamp_Feedback.Color = [1.00,1.00,0.00];                             % Turn Lamp Yellow
     pause(0.1);
-    app.Lamp_Feedback.Color = [0.00,1.00,0.00];
-    pause(0.1);
-    app.Lamp_Feedback.Color = [1.00,1.00,0.00];
     
     Differential_Solver(app);                                               % Run the Solver
 
@@ -38,8 +35,8 @@ function IO_CalculationButtonPushed(app)
 
 
 
-                                                                            % Wait some time so it looks like the program is working really hard
+    pause(0.2);                                                             % Wait some time so it looks like the program is working really hard
     app.Lamp_Feedback.Color = [0.00,1.00,0.00];                             % Turn Lamp Green
-    pause(0.2);
+    
     app.Button_StartCalculation.Enable ="on";                               % Turn button back on
 end
