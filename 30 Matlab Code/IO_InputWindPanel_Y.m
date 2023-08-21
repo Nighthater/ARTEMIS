@@ -1,7 +1,8 @@
 function IO_InputWindPanel_Y(app)
-    % Check Sine 01
+     % Create time values for Plot
     t = linspace(0, app.tspan_end, 2500);
-
+	
+	% Check Sine 01
     if app.SwitchSine01_2.Value == 1
         app.LampSine01_2.Color = [1.00,0.00,0.00];
         app.Spinner_PhaseAngle01_2.Enable = "On";
@@ -52,21 +53,27 @@ function IO_InputWindPanel_Y(app)
         y_sine03 = zeros(size(t));
     end
     
-
+	% Constuct the Values out of the 3 individual sine functions
     y_sineTotal = y_sine01 + y_sine02 + y_sine03;
     
+	% Adjust the X axis of the Plot window
     xlim(app.WindPlot_2,[0,app.tspan_end]);
     
+	% Adjust the Y axis of the Plot Window
     if min([y_sine01, y_sine02, y_sine03, y_sineTotal]) < -1 || max([y_sine01, y_sine02, y_sine03, y_sineTotal]) > 1
         ylim(app.WindPlot_2, [min([y_sine01, y_sine02, y_sine03, y_sineTotal]) , max([y_sine01, y_sine02, y_sine03, y_sineTotal])] );
     else
         ylim(app.WindPlot_2, [-1,1]);
     end
+	
+	% Plot the individual Sine functions
     plot(app.WindPlot_2, t, y_sine01 , 'r', t, y_sine02, 'g', t, y_sine03, 'b');
     hold(app.WindPlot_2, 'on');
+	% Plot the Combined Sine Function
     plot(app.WindPlot_2, t, y_sineTotal, 'w', 'LineWidth', 3);
     hold(app.WindPlot_2, 'off');
 
+	% Export the Values
     app.SIM_Wind_Y_Properties = [
         app.Spinner_Period01_2.Value
         app.Spinner_PhaseAngle01_2.Value * pi/180 
