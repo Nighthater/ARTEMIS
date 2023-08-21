@@ -38,7 +38,7 @@ function IO_CalculationButtonPushed(app)
 
 
 
-    pause(1.0);                                                             % Wait some time so it looks like the program is working really hard
+                                                                            % Wait some time so it looks like the program is working really hard
     app.Lamp_Feedback.Color = [0.00,1.00,0.00];                             % Turn Lamp Green
     pause(0.2);
     app.Button_StartCalculation.Enable ="on";                               % Turn button back on

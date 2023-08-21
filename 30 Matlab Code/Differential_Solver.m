@@ -3,19 +3,19 @@ function Differential_Solver(app)
     % Declare Global variables to pass into the differential equations
     global g cw air_density r m states wind_x_params wind_y_params
     
-    % Take Values needed in calculation
-    g = app.SIM_Gravity;
-    cw = 0.4; % TODO
-    air_density = app.SIM_Air_Density;
-    r = app.BB_Diameter / 2;
-    m = app.BB_Mass;
-
     % States are used to toggle functions, states() are either 0 or 1
     states(1) = app.Bool_Gravity;       % Toggle for Gravity
     states(2) = app.Bool_AirFriction;   % Toggle for Friction
     states(3) = app.Bool_MagnusEffect;  % Toggle for Magnus
     states(4) = app.Bool_SpinDecay;     % Toggle for Spin Decay
     states(5) = app.Bool_Wind;          % Toggle for Wind
+
+    % Take Values needed in calculation
+    g = app.SIM_Gravity * states(1);
+    cw = 0.4; % TODO
+    air_density = app.SIM_Air_Density;
+    r = app.BB_Diameter / 2;
+    m = app.BB_Mass;
 
 	% Whe wind parameters contain the parameters for 3 sine functions that define the wind in the simulation
     wind_x_params(1:12) = app.SIM_Wind_X_Properties(1:12);
@@ -81,7 +81,7 @@ function dy = dgl_only_gravity(t,y)
     A = pi * r^2;
 	
 	% Gravity
-    gravity = g * states(1);
+    gravity = g; % * states(1);
     
     %% Air Resistance
 	% Wind Speed Downrange
@@ -131,13 +131,13 @@ function dy = dgl_only_gravity(t,y)
 	
     % Vector A (Velocityvector) and the Cross Product AxB is given, calculate b
 	% A, AxB and B are all 90° from each other, so A crossed AxB is B
-	mag_b =  cross(mag_v, mag_cross);
+	mag_b =  - cross(mag_v, mag_cross);
     
 	% B points in the direction of the Magnusforce with length 1
 	% Get the individual components
-    magnus_x =  F_Magnus * mag_b(1) * states(3);
-	magnus_y =  F_Magnus * mag_b(2) * states(3);
-    magnus_z =  F_Magnus * mag_b(3) * states(3);
+    magnus_x = F_Magnus * mag_b(1) * states(3);
+	magnus_y = F_Magnus * mag_b(2) * states(3);
+    magnus_z = F_Magnus * mag_b(3) * states(3);
     
     %% Spin decay
 	% nu & I
