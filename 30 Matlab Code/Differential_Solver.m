@@ -1,7 +1,7 @@
 function Differential_Solver(app)
 	%% Variable Declarations
     % Declare Global variables to pass into the differential equations
-    global g cw air_density r m states wind_x_params wind_y_params last_az
+    global g cw air_density r m states wind_x_params wind_y_params wind_z_params
     
     % States are used to toggle functions, states() are either 0 or 1
     states(1) = app.Bool_Gravity;       % Toggle for Gravity
@@ -20,8 +20,7 @@ function Differential_Solver(app)
 	% Whe wind parameters contain the parameters for 3 sine functions that define the wind in the simulation
     wind_x_params(1:12) = app.SIM_Wind_X_Properties(1:12);
     wind_y_params(1:12) = app.SIM_Wind_Y_Properties(1:12);
-
-    last_az = 0;
+	wind_z_params(1:12) = app.SIM_Wind_Z_Properties(1:12);
 	
 	%% ODE Solver
     tspan = [0 app.tspan_end];                                              % Timespan for the Simulation starts at 0 and ends at User specified time
@@ -37,8 +36,7 @@ function Differential_Solver(app)
 
     y0 = [x0 vx y0 vy z0 vz theta omega];                                   % Define the starting values as y0: with y0(1:8) = [x, x', y, y', z, z', θ, θ']
 
-    %options = odeset('RelTol',1e-8,'AbsTol',1e-10,'Events',@events);        % Options for the ODE Solver
-    options = odeset('RelTol',1e-6,'Events',@events);
+    options = odeset('RelTol',1e-8,'AbsTol',1e-10,'Events',@events);        % Options for the ODE Solver
     [t,y] = ode45(@Airsoft, tspan, y0, options);                            % Call the ODE Selver and give out the results into t and y
                                                                             % t are simply the time values
                                                                             % y(1:4) contains position and velocity in the same format as the starting values
@@ -78,13 +76,13 @@ end
 
 %% Differential Equations
 function dy = Airsoft(t,y) % (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧ Magic 
-    global g cw air_density r m states wind_x_params wind_y_params last_az
+    global g cw air_density r m states wind_x_params wind_y_params wind_z_params
     
 	% Crossection Area of Projectile
     A = pi * r^2;
 	
 	% Gravity
-    gravity = g; % * states(1);
+    gravity = g;
     
     %% Air Resistance
 	% Wind Speed Downrange
@@ -101,39 +99,40 @@ function dy = Airsoft(t,y) % (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧ Magic
     sine_03_y = sin(2*pi*(t / wind_y_params(9)) + wind_y_params(10)) * wind_y_params(11) + wind_y_params(12);
     wind_speed_y = sine_01_y + sine_02_y + sine_03_y;
 	
+	% Wind Speed Crossrange
+	% Construct Sine Values and add them together
+    sine_01_z = sin(2*pi*(t / wind_z_params(1)) + wind_z_params(2)) * wind_z_params(3) + wind_z_params(4);
+    sine_02_z = sin(2*pi*(t / wind_z_params(5)) + wind_z_params(6)) * wind_z_params(7) + wind_z_params(8);
+    sine_03_z = sin(2*pi*(t / wind_z_params(9)) + wind_z_params(10)) * wind_z_params(11) + wind_z_params(12);
+    wind_speed_z = sine_01_z + sine_02_z + sine_03_z;
+	
 	% Relative Velocities
 	% Subtract the Windspeed from the groundspeed to get the airspeed
     airspeed_x = y(2) + ( - wind_speed_x * states(5) );
     airspeed_y = y(4) + ( - wind_speed_y * states(5) );
-	%airspeed_z = y(6) + ( - wind_speed_z * states(5) );
+	airspeed_z = y(6) + ( - wind_speed_z * states(5) );
 	
 	% Air Resistance Force
 	% Calculate the Air Resistance Force based on the airspeed
     air_resistance_x = 1/2 * cw * air_density * A * airspeed_x^2 * sign(airspeed_x) * -1 * states(2);
 	air_resistance_y = 1/2 * cw * air_density * A * airspeed_y^2 * sign(airspeed_y) * -1 * states(2);
-    air_resistance_z = 1/2 * cw * air_density * A * y(6)^2 * sign(y(6)) * -1 * states(2);
+    air_resistance_z = 1/2 * cw * air_density * A * airspeed_z^2 * sign(airspeed_z) * -1 * states(2);
 
     %% Magnus Force
 	% Calculate the Magnitude of the airspeed
-    total_velocity = sqrt(airspeed_x^2 + airspeed_y^2 +y(6)^2);
+    total_velocity = sqrt(airspeed_x^2 + airspeed_y^2 + airspeed_z^2);
 
 	% Calculate the Magnitude of the Magnus Force
     F_Magnus = 4/3 * pi * air_density * r^3 * y(8) * total_velocity;
 	
 	% Construct a vector with the direction and magnitude of the Airspeed
-	Velocityvector = [airspeed_x airspeed_y y(6)];
+	Velocityvector = [airspeed_x airspeed_y airspeed_z];
 	
 	% Scale the Vector to length 1
 	mag_v = Velocityvector / total_velocity;
 	
 	% Get the Flight Azimuth direction in XY
 	angle_az = atan2(y(2),y(4)); % Problemstelle
-    
-    if abs(angle_az-last_az) > 90/180*pi
-        angle_az = last_az;
-    else
-        last_az = angle_az;
-    end
     
     % The Cross product AxB is the Azimuth rotated by 90 deg (z component = 0)
 	mag_cross = [sin(angle_az + pi/2) cos(angle_az + pi/2) 0];
@@ -169,9 +168,7 @@ end
 %% Event detection
 % Abort Simulaiton once Object hits the Ground 
 function [value,isterminal,direction] = events(t,y)
-	tol = 1e-2;                                                       
-    vel = sqrt(y(2)^2 + y(4)^2 + y(6)^2);                                   % value to monitor (Sum of Speeds)
-    value = [y(5) vel-tol];
-    isterminal = [1 1];     % 1: Abort solver, 0: Continue regardless of event
-    direction = [0 0];      % -1: Only if Derivative is negative, 1: Only if Derivative is Positive, 0: Detect all events
+    value = y(5);           % Monitor Altitude
+    isterminal = 1;         % 1: Abort solver, 0: Continue regardless of event
+    direction = 0;          % -1: Only if Derivative is negative, 1: Only if Derivative is Positive, 0: Detect all events
 end

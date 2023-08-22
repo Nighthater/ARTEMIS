@@ -1,7 +1,8 @@
 function IO_CalculationButtonPushed(app)
     % Call InputWindPanel just to be sure
-    IO_InputWindPanel(app)
-	IO_InputWindPanel_Y(app)
+    IO_InputWindPanel(app);
+	IO_InputWindPanel_Y(app);
+    IO_InputWindPanel_Z(app);
 
     
     app.Button_StartCalculation.Enable ="off";                              % Turn button off
