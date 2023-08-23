@@ -99,6 +99,9 @@ xlabel('ODE Solver');  % Add labels to the axes
 ylabel('Time [s]');
 title('ODE Solver Time Comparison');
 
+% Adjust the y-axis limits
+ylim([0, max(timing) * 1.1]);
+
 %% Differential Equations
 function dy = Airsoft(t,y) % (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧ Magic 
     global g cw air_density r m states wind_x_speed wind_y_speed wind_z_speed
