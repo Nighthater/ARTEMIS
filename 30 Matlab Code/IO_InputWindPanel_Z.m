@@ -74,6 +74,9 @@ function IO_InputWindPanel_Z(app)
     hold(app.WindPlot_3, 'off');
 
 	% Export the Values
+    tog_01 = app.SwitchSine01_3.Value;
+    tog_02 = app.SwitchSine02_3.Value;
+    tog_03 = app.SwitchSine03_3.Value;
     app.SIM_Wind_Z_Properties = [
         app.Spinner_Period01_3.Value
         app.Spinner_PhaseAngle01_3.Value * pi/180 
@@ -91,6 +94,9 @@ function IO_InputWindPanel_Z(app)
         app.Spinner_Offset03_3.Value
         
     ];
+    app.SIM_Wind_Z_Properties(2:4) = app.SIM_Wind_Z_Properties(2:4) * tog_01;
+    app.SIM_Wind_Z_Properties(6:8) = app.SIM_Wind_Z_Properties(6:8) * tog_02;
+    app.SIM_Wind_Z_Properties(10:12) = app.SIM_Wind_Z_Properties(10:12) * tog_03;
 end
 
 function y = sine01(t,app)

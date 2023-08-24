@@ -74,6 +74,9 @@ function IO_InputWindPanel(app)
     hold(app.WindPlot, 'off');
 	
 	% Export the Values
+    tog_01 = app.SwitchSine01.Value;
+    tog_02 = app.SwitchSine02.Value;
+    tog_03 = app.SwitchSine03.Value;
     app.SIM_Wind_X_Properties = [
         app.Spinner_Period01.Value
         app.Spinner_PhaseAngle01.Value * pi/180 
@@ -91,6 +94,10 @@ function IO_InputWindPanel(app)
         app.Spinner_Offset03.Value
         
     ];
+    app.SIM_Wind_X_Properties(2:4) = app.SIM_Wind_X_Properties(2:4) * tog_01;
+    app.SIM_Wind_X_Properties(6:8) = app.SIM_Wind_X_Properties(6:8) * tog_02;
+    app.SIM_Wind_X_Properties(10:12) = app.SIM_Wind_X_Properties(10:12) * tog_03;
+
 end
 
 

@@ -18,16 +18,15 @@ air_density = 1.29;
 r = 0.006 / 2;      % m
 m = 0.0003;         % kg
 
-velocity = 10;      % m/s
-angle_initial = 10; % deg
-height = 1.8;       % m
-spin = 1000;        % rpm
+velocity = 100;      % m/s
+angle_initial = 45; % deg
+height = 5;       % m
+spin = 6000;        % rpm
 t_end = 50; %s
 
-% Whe wind parameters contain the parameters for 3 sine functions that define the wind in the simulation
-wind_x_speed = 0;
+wind_x_speed = 10;
 wind_y_speed = 0;
-wind_z_speed = 0;
+wind_z_speed = 10;
 
 
 
@@ -86,7 +85,7 @@ axis equal
 
 xlabel('X [m]');  % Add labels to the axes
 ylabel('Z [m]');
-title('ODE Solver Comparison');
+title('ODE Solver Comparison - 3D');
 legend('ode45', 'ode23', 'ode113', 'ode78', 'ode89', 'ode15s', 'ode23s', 'ode23t', 'ode23tb');
 grid on;  % Add grid lines to the plot
 hold off;  % Release the hold on the plot
@@ -101,6 +100,7 @@ title('ODE Solver Time Comparison');
 
 % Adjust the y-axis limits
 ylim([0, max(timing) * 1.1]);
+figure
 
 %% Differential Equations
 function dy = Airsoft(t,y) % (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧ Magic 
