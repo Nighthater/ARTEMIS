@@ -14,26 +14,26 @@ function IO_ToggleFunctions(app)
         app.Lamp_Gravity.Color = [0.00,1.00,0.00];
         app.Spinner_gravity.Enable = "On";
     else
-        app.Lamp_Gravity.Color = [0.65,0.65,0.65];
+        app.Lamp_Gravity.Color = [1.00,0.00,0.00];
         app.Spinner_gravity.Enable = "Off";
     end
 
     if(app.Bool_AirFriction == 1)
         app.Lamp_AirFriction.Color = [0.00,1.00,0.00];
     else
-        app.Lamp_AirFriction.Color = [0.65,0.65,0.65];
+        app.Lamp_AirFriction.Color = [1.00,0.00,0.00];
     end
 
     if(app.Bool_MagnusEffect == 1)
         app.Lamp_MagnusEffect.Color = [0.00,1.00,0.00];
     else
-        app.Lamp_MagnusEffect.Color = [0.65,0.65,0.65];
+        app.Lamp_MagnusEffect.Color = [1.00,0.00,0.00];
     end
 
     if(app.Bool_SpinDecay == 1)
         app.Lamp_SpinDecay.Color = [0.00,1.00,0.00];
     else
-        app.Lamp_SpinDecay.Color = [0.65,0.65,0.65];
+        app.Lamp_SpinDecay.Color = [1.00,0.00,0.00];
     end
 
     if(app.Bool_Wind == 1)
