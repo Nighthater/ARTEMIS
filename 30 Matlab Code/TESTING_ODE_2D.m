@@ -24,14 +24,14 @@ m = 0.0003;         % kg
 %spin = 6000;        % rpm
 %t_end = 50; %s
 
-velocity = 300;      % m/s
-angle_initial = 0; % deg
+velocity = 100;     % m/s
+angle_initial = 30; % deg
 height = 50;       % m
-spin = 12000;        % rpm
+spin = 5000;        % rpm
 t_end = 500; %s
 
-wind_x_speed = 10;
-wind_z_speed = 10;
+wind_x_speed = 3;
+wind_z_speed = -1;
 
 
 
@@ -54,25 +54,33 @@ options = odeset('RelTol',1e-8,'AbsTol',1e-10,'Events',@events);        % Option
 % Prepare timing measurement of solvers
 timing(1:9) = 0;
 
-tic;
+tic
 [t_ode45,y_ode45] =     ode45(@Airsoft, tspan, y0, options);            % Call the ODE Selver and give out the results into t and y
-timing(1) = toc; tic;
+timing(1) = toc
+tic
 [t_ode23,y_ode23] =     ode23(@Airsoft, tspan, y0, options);            % Call the ODE Selver and give out the results into t and y
-timing(2) = toc; tic;
+timing(2) = toc 
+tic
 [t_ode113,y_ode113] =   ode113(@Airsoft, tspan, y0, options);           % Call the ODE Selver and give out the results into t and y
-timing(3) = toc; tic;
+timing(3) = toc
+tic
 [t_ode78,y_ode78] =     ode78(@Airsoft, tspan, y0, options);            % Call the ODE Selver and give out the results into t and y
-timing(4) = toc; tic;
+timing(4) = toc 
+tic
 [t_ode89,y_ode89] =     ode89(@Airsoft, tspan, y0, options);            % Call the ODE Selver and give out the results into t and y
-timing(5) = toc; tic;
+timing(5) = toc 
+tic
 [t_ode15s,y_ode15s] =   ode15s(@Airsoft, tspan, y0, options);           % Call the ODE Selver and give out the results into t and y
-timing(6) = toc; tic;
+timing(6) = toc 
+tic
 [t_ode23s,y_ode23s] =   ode23s(@Airsoft, tspan, y0, options);           % Call the ODE Selver and give out the results into t and y
-timing(7) = toc; tic;
+timing(7) = toc
+tic
 [t_ode23t,y_ode23t] =   ode23t(@Airsoft, tspan, y0, options);           % Call the ODE Selver and give out the results into t and y
-timing(8) = toc; tic;
+timing(8) = toc
+tic
 [t_ode23tb,y_ode23tb] = ode23tb(@Airsoft, tspan, y0, options);          % Call the ODE Selver and give out the results into t and y
-timing(9) = toc;
+timing(9) = toc
 
 plot(y_ode45(:,1), y_ode45(:,3), 'b', 'LineWidth', 1.5);                     % Blue line for ode45 results
 hold on

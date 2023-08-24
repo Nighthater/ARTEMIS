@@ -37,7 +37,7 @@ function Differential_Solver(app)
     y0 = [x0 vx y0 vy z0 vz theta omega];                                   % Define the starting values as y0: with y0(1:8) = [x, x', y, y', z, z', θ, θ']
 
     options = odeset('RelTol',1e-8,'AbsTol',1e-10,'Events',@events);        % Options for the ODE Solver
-    [t,y] = ode45(@Airsoft, tspan, y0, options);                            % Call the ODE Selver and give out the results into t and y
+    [t,y] = ode78(@Airsoft, tspan, y0, options);                            % Call the ODE Selver and give out the results into t and y
                                                                             % t are simply the time values
                                                                             % y(1:4) contains position and velocity in the same format as the starting values
     %% Exporting Results
