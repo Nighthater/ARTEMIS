@@ -146,6 +146,7 @@ function dy = Airsoft(t,y) % (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧ Magic
     magnus_x = F_Magnus * mag_b(1) * states(3);
 	magnus_y = F_Magnus * mag_b(2) * states(3);
     magnus_z = F_Magnus * mag_b(3) * states(3);
+
     
     %% Spin decay
 	% nu & I
